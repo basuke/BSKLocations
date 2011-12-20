@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EB279FD8149F3FC3003E21D8 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB279FD7149F3FC3003E21D8 /* AVFoundation.framework */; };
+		EB279FDB149F40B8003E21D8 /* Purr.aiff in Resources */ = {isa = PBXBuildFile; fileRef = EB279FDA149F40B8003E21D8 /* Purr.aiff */; };
 		EB29F09B149B88BB0073AC9D /* TargetArea.m in Sources */ = {isa = PBXBuildFile; fileRef = EB29F09A149B88BB0073AC9D /* TargetArea.m */; };
 		EB29F0AE149C4B330073AC9D /* BSKLocationClient.m in Sources */ = {isa = PBXBuildFile; fileRef = EB29F0AD149C4B330073AC9D /* BSKLocationClient.m */; };
 		EB29F0B1149C636D0073AC9D /* GoHere4.png in Resources */ = {isa = PBXBuildFile; fileRef = EB29F0AF149C636D0073AC9D /* GoHere4.png */; };
@@ -40,6 +42,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		EB279FD7149F3FC3003E21D8 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		EB279FDA149F40B8003E21D8 /* Purr.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = Purr.aiff; sourceTree = "<group>"; };
 		EB29F099149B88BB0073AC9D /* TargetArea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TargetArea.h; sourceTree = "<group>"; };
 		EB29F09A149B88BB0073AC9D /* TargetArea.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TargetArea.m; sourceTree = "<group>"; };
 		EB29F0AC149C4B330073AC9D /* BSKLocationClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSKLocationClient.h; sourceTree = "<group>"; };
@@ -88,6 +92,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EB279FD8149F3FC3003E21D8 /* AVFoundation.framework in Frameworks */,
 				EBD9F819149B7BE300A0BC65 /* AudioToolbox.framework in Frameworks */,
 				EBD9F817149B7B5500A0BC65 /* MapKit.framework in Frameworks */,
 				EB77F2BF149B615B00DA9853 /* CoreLocation.framework in Frameworks */,
@@ -126,6 +131,7 @@
 				EB77F2BE149B615B00DA9853 /* CoreLocation.framework */,
 				EBD9F816149B7B5500A0BC65 /* MapKit.framework */,
 				EBD9F818149B7BE300A0BC65 /* AudioToolbox.framework */,
+				EB279FD7149F3FC3003E21D8 /* AVFoundation.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -155,6 +161,7 @@
 				EB77F288149B23A200DA9853 /* Locations-Prefix.pch */,
 				EB29F0B9149C7AF90073AC9D /* Icon.png */,
 				EB29F0B7149C7AF40073AC9D /* Icon@2x.png */,
+				EB279FDA149F40B8003E21D8 /* Purr.aiff */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -284,6 +291,7 @@
 				EB29F0B6149C6E710073AC9D /* Delete@2x.png in Resources */,
 				EB29F0B8149C7AF40073AC9D /* Icon@2x.png in Resources */,
 				EB29F0BA149C7AFA0073AC9D /* Icon.png in Resources */,
+				EB279FDB149F40B8003E21D8 /* Purr.aiff in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

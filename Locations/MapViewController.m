@@ -10,12 +10,14 @@
 #import "BSKLocationManager.h"
 #import "TargetArea.h"
 #import "BSKLocationClient.h"
+#import <AVFoundation/AVFoundation.h>
 
 @interface MapViewController() {
 	
 }
 
 - (void)addRegion:(CLLocationDistance)radius desiredAccuracy:(CLLocationAccuracy)accuracy;
+- (void)playSound;
 
 @end
 
@@ -100,6 +102,21 @@
 	[region release];
 }
 
+- (void)playSound {
+	NSURL *url = [[NSBundle mainBundle] URLForResource:@"Purr" withExtension:@"aiff"];
+	NSError *error = nil;
+	AVAudioPlayer *player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
+	if (player) {
+		[player play];
+		
+		double delayInSeconds = 2.0;
+		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+			[player release];
+		});
+	}
+}
+
 #pragma mark - MKMapViewDelegate
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation {	
@@ -159,6 +176,25 @@
 	
 	MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(center, radius, radius);
 	[self.mainMapView setRegion:region];
+}
+
+- (void)regionDidEnterOrExit:(NSNotification *)notification {
+	CLRegion *region = [[notification userInfo] objectForKey:BSKLocationManagerRegionUserInfoKey];
+	
+	[self.mainMapView setCenterCoordinate:region.center animated:YES];
+	
+	if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive) {
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:[notification name] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		[alert show];
+		[alert release];
+		
+		[self playSound];
+	} else {
+		UILocalNotification *lc = [[UILocalNotification alloc] init];
+		lc.soundName = UILocalNotificationDefaultSoundName;
+		lc.alertBody = [notification name];
+		[[UIApplication sharedApplication] presentLocalNotificationNow:lc];
+	}
 }
 
 - (void)authorizationChanged:(NSNotification *)notification {
