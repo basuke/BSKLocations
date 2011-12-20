@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		EB279FD8149F3FC3003E21D8 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB279FD7149F3FC3003E21D8 /* AVFoundation.framework */; };
 		EB279FDB149F40B8003E21D8 /* Purr.aiff in Resources */ = {isa = PBXBuildFile; fileRef = EB279FDA149F40B8003E21D8 /* Purr.aiff */; };
+		EB279FF014A04626003E21D8 /* LocationLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = EB279FEF14A04626003E21D8 /* LocationLogger.m */; };
 		EB29F09B149B88BB0073AC9D /* TargetArea.m in Sources */ = {isa = PBXBuildFile; fileRef = EB29F09A149B88BB0073AC9D /* TargetArea.m */; };
 		EB29F0AE149C4B330073AC9D /* BSKLocationClient.m in Sources */ = {isa = PBXBuildFile; fileRef = EB29F0AD149C4B330073AC9D /* BSKLocationClient.m */; };
 		EB29F0B1149C636D0073AC9D /* GoHere4.png in Resources */ = {isa = PBXBuildFile; fileRef = EB29F0AF149C636D0073AC9D /* GoHere4.png */; };
@@ -44,6 +45,8 @@
 /* Begin PBXFileReference section */
 		EB279FD7149F3FC3003E21D8 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		EB279FDA149F40B8003E21D8 /* Purr.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = Purr.aiff; sourceTree = "<group>"; };
+		EB279FEE14A04626003E21D8 /* LocationLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationLogger.h; sourceTree = "<group>"; };
+		EB279FEF14A04626003E21D8 /* LocationLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationLogger.m; sourceTree = "<group>"; };
 		EB29F099149B88BB0073AC9D /* TargetArea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TargetArea.h; sourceTree = "<group>"; };
 		EB29F09A149B88BB0073AC9D /* TargetArea.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TargetArea.m; sourceTree = "<group>"; };
 		EB29F0AC149C4B330073AC9D /* BSKLocationClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSKLocationClient.h; sourceTree = "<group>"; };
@@ -197,6 +200,8 @@
 				EBD9F804149B6A0500A0BC65 /* LoggerViewController.h */,
 				EBD9F805149B6A0500A0BC65 /* LoggerViewController.m */,
 				EBD9F806149B6A0500A0BC65 /* LoggerViewController.xib */,
+				EB279FEE14A04626003E21D8 /* LocationLogger.h */,
+				EB279FEF14A04626003E21D8 /* LocationLogger.m */,
 				EB77F2B8149B3FFD00DA9853 /* LocationEvent.h */,
 				EB77F2B9149B3FFD00DA9853 /* LocationEvent.m */,
 			);
@@ -328,6 +333,7 @@
 				EBD9F80E149B79B600A0BC65 /* MapViewController.m in Sources */,
 				EB29F09B149B88BB0073AC9D /* TargetArea.m in Sources */,
 				EB29F0AE149C4B330073AC9D /* BSKLocationClient.m in Sources */,
+				EB279FF014A04626003E21D8 /* LocationLogger.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

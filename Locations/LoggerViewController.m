@@ -8,64 +8,26 @@
 
 #import "LoggerViewController.h"
 #import "BSKLocationManager.h"
+#import "LocationLogger.h"
 #import "LocationEvent.h"
 
-@interface LoggerViewController()
-
-@property(retain, nonatomic) NSMutableArray *events;
+@interface LoggerViewController()<LocationLoggerDelegate> {
+	LocationLogger *logger;
+}
 
 @end
 
 @implementation LoggerViewController
 
 @synthesize loggerView=_loggerView;
-@synthesize events=_events;
 
 - (void)awakeFromNib {
-	self.events = [NSMutableArray arrayWithCapacity:100];
-	
-	NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-	
-	[center addObserver:self 
-			   selector:@selector(locationDidUpdate:) 
-				   name:BSKLocationManagerDidUpdateToLocationNotification 
-				 object:nil];
-	
-	[center addObserver:self 
-			   selector:@selector(didEnterInRegion:) 
-				   name:BSKLocationManagerDidEnterRegionNotification
-				 object:nil];
-	
-	[center addObserver:self 
-			   selector:@selector(didExitFromRegion:) 
-				   name:BSKLocationManagerDidExitRegionNotification
-				 object:nil];
-	
-	[center addObserver:self 
-			   selector:@selector(didFailWithError:) 
-				   name:BSKLocationManagerDidFailWithErrorNotification
-				 object:nil];
-	
-	[center addObserver:self 
-			   selector:@selector(didFailWithErrorForRegion:) 
-				   name:BSKLocationManagerMonitoringRegionDidFailWithErrorNotification
-				 object:nil];
-	
-	[center addObserver:self 
-			   selector:@selector(didChangeAuthorizationStatus:) 
-				   name:BSKLocationManagerDidChangeAuthorizationStatusNotification
-				 object:nil];
-	
-	[center addObserver:self 
-			   selector:@selector(didStartMonitoringForRegion:) 
-				   name:BSKLocationManagerDidStartMonitoringForRegionNotification
-				 object:nil];
+	logger = [[LocationLogger alloc] init];
+	logger.delegate = self;
 }
 
 - (void)dealloc {
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	
-    self.events = nil;
+    [logger release];
 	
     [super dealloc];
 }
@@ -73,7 +35,7 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 	
-	[self.events removeAllObjects];
+	[logger removeAllEvents];
 }
 
 #pragma mark - View lifecycle
@@ -98,7 +60,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return [self.events count];
+	return [logger count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -108,7 +70,7 @@
 		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:identifier] autorelease];
 	}
 	
-	LocationEvent *event = [_events objectAtIndex:indexPath.row];
+	LocationEvent *event = [logger eventAtIndex:indexPath.row];
 	
 	NSString *title = [NSString stringWithFormat:@"%@ : %@ %@", [NSDateFormatter localizedStringFromDate:event.timestamp dateStyle:NSDateFormatterNoStyle timeStyle:NSDateFormatterMediumStyle], event.title, (event.inBackground ? @"( BG)" : @"")];
 	
@@ -122,88 +84,21 @@
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-#pragma mark - Notifications
+#pragma mark - LocationLoggerDelegate
 
-- (void)pushEvent:(LocationEvent *)event {
+- (void)locationLogger:(LocationLogger *)logger eventDidAdd:(LocationEvent *)event atIndexes:(NSIndexSet *)indexes {
 	dispatch_async(dispatch_get_main_queue(), ^{
-		[_events insertObject:event atIndex:0];
-		
-		CGPoint offset = _loggerView.contentOffset;
-		[_loggerView reloadData];
-		if (offset.y > 0) {
-			offset.y += _loggerView.rowHeight;
-			_loggerView.contentOffset = offset;
+		if (_loggerView) {
+			CGPoint offset = _loggerView.contentOffset;
+			
+			[_loggerView reloadData];
+			
+			if (offset.y > 0) {
+				offset.y += _loggerView.rowHeight;
+				_loggerView.contentOffset = offset;
+			}
 		}
 	});
 }
-
-- (void)locationDidUpdate:(NSNotification *)notification {
-	CLLocation *location = [[notification userInfo] objectForKey:BSKLocationManagerLocationUserInfoKey];
-	
-	[self pushEvent:[LocationEvent eventWithTitle:@"Location" location:location]];
-}
-
-- (void)didEnterInRegion:(NSNotification *)notification {
-	CLRegion *region = [[notification userInfo] objectForKey:BSKLocationManagerRegionUserInfoKey];
-	
-	[self pushEvent:[LocationEvent eventWithTitle:@"Enter Region" region:region]];
-}
-
-- (void)didExitFromRegion:(NSNotification *)notification {
-	CLRegion *region = [[notification userInfo] objectForKey:BSKLocationManagerRegionUserInfoKey];
-	
-	[self pushEvent:[LocationEvent eventWithTitle:@"Exit Region" region:region]];
-}
-
-- (void)didFailWithError:(NSNotification *)notification {
-	NSError *error = [[notification userInfo] objectForKey:BSKLocationManagerErrorUserInfoKey];
-	
-	[self pushEvent:[LocationEvent eventWithTitle:@"Fail" error:error]];
-}
-
-- (void)didFailWithErrorForRegion:(NSNotification *)notification {
-	NSError *error = [[notification userInfo] objectForKey:BSKLocationManagerErrorUserInfoKey];
-	CLRegion *region = [[notification userInfo] objectForKey:BSKLocationManagerRegionUserInfoKey];
-	
-	LocationEvent *event = [LocationEvent eventWithTitle:@"Fail Region" error:error];
-	event.region = region;
-	
-	[self pushEvent:event];
-}
-
-- (void)didChangeAuthorizationStatus:(NSNotification *)notification {
-	NSNumber *statusCode = [[notification userInfo] objectForKey:BSKLocationManagerAuthorizationStatusUserInfoKey];
-	
-	NSString *status = nil;
-	switch ([statusCode intValue]) {
-		case kCLAuthorizationStatusNotDetermined:
-			status = @"Not Determined";
-			break;
-			
-		case kCLAuthorizationStatusRestricted:
-			status = @"Restricted";
-			break;
-			
-		case kCLAuthorizationStatusDenied:
-			status = @"Denied";
-			break;
-			
-		case kCLAuthorizationStatusAuthorized:
-			status = @"Authorized";
-			break;
-			
-		default:
-			status = [statusCode stringValue];
-			break;
-	}
-	[self pushEvent:[LocationEvent eventWithTitle:[NSString stringWithFormat:@"Status: %@", status]]];
-}
-
-- (void)didStartMonitoringForRegion:(NSNotification *)notification {
-	CLRegion *region = [[notification userInfo] objectForKey:BSKLocationManagerRegionUserInfoKey];
-	
-	[self pushEvent:[LocationEvent eventWithTitle:@"Start Monitoring" region:region]];
-}
-
 
 @end
