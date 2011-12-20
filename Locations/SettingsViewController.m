@@ -23,7 +23,7 @@
 
 @implementation SettingsViewController
 
-@synthesize locationEnabled, workInBackground, distanceFilter, distanceFilterLabel, desiredAccuracy, desiredAccuracyLabel;
+@synthesize locationEnabled, workInBackground, distanceFilter, distanceFilterLabel, desiredAccuracy, desiredAccuracyLabel, buildInfoLabel;
 
 #pragma mark - View lifecycle
 
@@ -41,6 +41,9 @@
 	
 	self.desiredAccuracy.value = [self desiredAccuracyToSliderValue:manager.desiredAccuracy];
 	self.desiredAccuracyLabel.text = [self desiredAccuracyToString:manager.desiredAccuracy];
+	
+	self.buildInfoLabel.text = [[NSBundle mainBundle] localizedStringForKey:@"BUILD_INFO" value:@"" table:@"Build"];
+	
 }
 
 - (void)viewDidUnload {

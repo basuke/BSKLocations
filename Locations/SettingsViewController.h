@@ -17,6 +17,8 @@
 @property(assign, nonatomic) IBOutlet UISlider *desiredAccuracy;
 @property(assign, nonatomic) IBOutlet UILabel *desiredAccuracyLabel;
 
+@property(assign, nonatomic) IBOutlet UILabel *buildInfoLabel;
+
 - (IBAction)locationEnabledChanged:(id)sender;
 - (IBAction)workInBackgroundChanged:(id)sender;
 - (IBAction)distanceFilterChanged:(id)sender;
