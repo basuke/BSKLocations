@@ -8,6 +8,7 @@
 
 #import "SettingsViewController.h"
 #import "BSKLocationManager.h"
+#import "Build.h"
 
 @interface SettingsViewController()
 
@@ -42,8 +43,7 @@
 	self.desiredAccuracy.value = [self desiredAccuracyToSliderValue:manager.desiredAccuracy];
 	self.desiredAccuracyLabel.text = [self desiredAccuracyToString:manager.desiredAccuracy];
 	
-	self.buildInfoLabel.text = [[NSBundle mainBundle] localizedStringForKey:@"BUILD_INFO" value:@"" table:@"Build"];
-	
+	self.buildInfoLabel.text = BUILD_INFO;
 }
 
 - (void)viewDidUnload {
