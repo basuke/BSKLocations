@@ -10,6 +10,7 @@
 		EB279FD8149F3FC3003E21D8 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB279FD7149F3FC3003E21D8 /* AVFoundation.framework */; };
 		EB279FDB149F40B8003E21D8 /* Purr.aiff in Resources */ = {isa = PBXBuildFile; fileRef = EB279FDA149F40B8003E21D8 /* Purr.aiff */; };
 		EB279FF014A04626003E21D8 /* LocationLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = EB279FEF14A04626003E21D8 /* LocationLogger.m */; };
+		EB279FF914A1A88D003E21D8 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB279FF814A1A88D003E21D8 /* QuartzCore.framework */; };
 		EB29F09B149B88BB0073AC9D /* TargetArea.m in Sources */ = {isa = PBXBuildFile; fileRef = EB29F09A149B88BB0073AC9D /* TargetArea.m */; };
 		EB29F0AE149C4B330073AC9D /* BSKLocationClient.m in Sources */ = {isa = PBXBuildFile; fileRef = EB29F0AD149C4B330073AC9D /* BSKLocationClient.m */; };
 		EB29F0B1149C636D0073AC9D /* GoHere4.png in Resources */ = {isa = PBXBuildFile; fileRef = EB29F0AF149C636D0073AC9D /* GoHere4.png */; };
@@ -32,8 +33,6 @@
 		EB77F2BA149B3FFD00DA9853 /* LocationEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = EB77F2B9149B3FFD00DA9853 /* LocationEvent.m */; };
 		EB77F2BD149B4E6F00DA9853 /* BSKLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EB77F2BC149B4E6F00DA9853 /* BSKLocationManager.m */; };
 		EB77F2BF149B615B00DA9853 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB77F2BE149B615B00DA9853 /* CoreLocation.framework */; };
-		EBD9F807149B6A0500A0BC65 /* LoggerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBD9F805149B6A0500A0BC65 /* LoggerViewController.m */; };
-		EBD9F808149B6A0500A0BC65 /* LoggerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EBD9F806149B6A0500A0BC65 /* LoggerViewController.xib */; };
 		EBD9F80E149B79B600A0BC65 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBD9F80C149B79B600A0BC65 /* MapViewController.m */; };
 		EBD9F80F149B79B600A0BC65 /* MapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EBD9F80D149B79B600A0BC65 /* MapViewController.xib */; };
 		EBD9F814149B7A1000A0BC65 /* Map2.png in Resources */ = {isa = PBXBuildFile; fileRef = EBD9F812149B7A1000A0BC65 /* Map2.png */; };
@@ -47,6 +46,8 @@
 		EB279FDA149F40B8003E21D8 /* Purr.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = Purr.aiff; sourceTree = "<group>"; };
 		EB279FEE14A04626003E21D8 /* LocationLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationLogger.h; sourceTree = "<group>"; };
 		EB279FEF14A04626003E21D8 /* LocationLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationLogger.m; sourceTree = "<group>"; };
+		EB279FF614A096EE003E21D8 /* ModalViewControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModalViewControllerDelegate.h; sourceTree = "<group>"; };
+		EB279FF814A1A88D003E21D8 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		EB29F099149B88BB0073AC9D /* TargetArea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TargetArea.h; sourceTree = "<group>"; };
 		EB29F09A149B88BB0073AC9D /* TargetArea.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TargetArea.m; sourceTree = "<group>"; };
 		EB29F0AC149C4B330073AC9D /* BSKLocationClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSKLocationClient.h; sourceTree = "<group>"; };
@@ -78,9 +79,6 @@
 		EB77F2BB149B4E6F00DA9853 /* BSKLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSKLocationManager.h; sourceTree = "<group>"; };
 		EB77F2BC149B4E6F00DA9853 /* BSKLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSKLocationManager.m; sourceTree = "<group>"; };
 		EB77F2BE149B615B00DA9853 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
-		EBD9F804149B6A0500A0BC65 /* LoggerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoggerViewController.h; sourceTree = "<group>"; };
-		EBD9F805149B6A0500A0BC65 /* LoggerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoggerViewController.m; sourceTree = "<group>"; };
-		EBD9F806149B6A0500A0BC65 /* LoggerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoggerViewController.xib; sourceTree = "<group>"; };
 		EBD9F80B149B79B600A0BC65 /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
 		EBD9F80C149B79B600A0BC65 /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
 		EBD9F80D149B79B600A0BC65 /* MapViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MapViewController.xib; sourceTree = "<group>"; };
@@ -95,6 +93,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EB279FF914A1A88D003E21D8 /* QuartzCore.framework in Frameworks */,
 				EB279FD8149F3FC3003E21D8 /* AVFoundation.framework in Frameworks */,
 				EBD9F819149B7BE300A0BC65 /* AudioToolbox.framework in Frameworks */,
 				EBD9F817149B7B5500A0BC65 /* MapKit.framework in Frameworks */,
@@ -135,6 +134,7 @@
 				EBD9F816149B7B5500A0BC65 /* MapKit.framework */,
 				EBD9F818149B7BE300A0BC65 /* AudioToolbox.framework */,
 				EB279FD7149F3FC3003E21D8 /* AVFoundation.framework */,
+				EB279FF814A1A88D003E21D8 /* QuartzCore.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -175,6 +175,7 @@
 				EB77F2AD149B286400DA9853 /* SettingsViewController.h */,
 				EB77F2AE149B286400DA9853 /* SettingsViewController.m */,
 				EB77F2AF149B286400DA9853 /* SettingsViewController.xib */,
+				EB279FF614A096EE003E21D8 /* ModalViewControllerDelegate.h */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -197,9 +198,6 @@
 		EBD9F80A149B6A0E00A0BC65 /* Logger */ = {
 			isa = PBXGroup;
 			children = (
-				EBD9F804149B6A0500A0BC65 /* LoggerViewController.h */,
-				EBD9F805149B6A0500A0BC65 /* LoggerViewController.m */,
-				EBD9F806149B6A0500A0BC65 /* LoggerViewController.xib */,
 				EB279FEE14A04626003E21D8 /* LocationLogger.h */,
 				EB279FEF14A04626003E21D8 /* LocationLogger.m */,
 				EB77F2B8149B3FFD00DA9853 /* LocationEvent.h */,
@@ -287,7 +285,6 @@
 				EB77F2B1149B286400DA9853 /* SettingsViewController.xib in Resources */,
 				EB77F2B6149B3BBC00DA9853 /* Gears.png in Resources */,
 				EB77F2B7149B3BBC00DA9853 /* Gears@2x.png in Resources */,
-				EBD9F808149B6A0500A0BC65 /* LoggerViewController.xib in Resources */,
 				EBD9F80F149B79B600A0BC65 /* MapViewController.xib in Resources */,
 				EBD9F814149B7A1000A0BC65 /* Map2.png in Resources */,
 				EBD9F815149B7A1000A0BC65 /* Map2@2x.png in Resources */,
@@ -329,7 +326,6 @@
 				EB77F2B0149B286400DA9853 /* SettingsViewController.m in Sources */,
 				EB77F2BA149B3FFD00DA9853 /* LocationEvent.m in Sources */,
 				EB77F2BD149B4E6F00DA9853 /* BSKLocationManager.m in Sources */,
-				EBD9F807149B6A0500A0BC65 /* LoggerViewController.m in Sources */,
 				EBD9F80E149B79B600A0BC65 /* MapViewController.m in Sources */,
 				EB29F09B149B88BB0073AC9D /* TargetArea.m in Sources */,
 				EB29F0AE149C4B330073AC9D /* BSKLocationClient.m in Sources */,

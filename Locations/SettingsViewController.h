@@ -7,8 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ModalViewControllerDelegate.h"
 
 @interface SettingsViewController : UIViewController
+
+@property(assign, nonatomic) id<ModalViewControllerDelegate> delegate;
 
 @property(assign, nonatomic) IBOutlet UISwitch *locationEnabled;
 @property(assign, nonatomic) IBOutlet UISwitch *workInBackground;

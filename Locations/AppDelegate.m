@@ -23,7 +23,7 @@
 	// reset previous requests. you should setup location requests by your self.
 	[manager reset];
 	
-	self.window.rootViewController = self.tabBarController;
+//	self.window.rootViewController = self.tabBarController;
     [self.window makeKeyAndVisible];
 	
     return YES;

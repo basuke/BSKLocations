@@ -8,12 +8,17 @@
 
 #import "MapViewController.h"
 #import "BSKLocationManager.h"
-#import "TargetArea.h"
 #import "BSKLocationClient.h"
+#import "TargetArea.h"
+#import "LocationLogger.h"
+#import "LocationEvent.h"
+#import "SettingsViewController.h"
+
+#import <QuartzCore/QuartzCore.h>
 #import <AVFoundation/AVFoundation.h>
 
-@interface MapViewController() {
-	
+@interface MapViewController()<LocationLoggerDelegate, ModalViewControllerDelegate> {
+	LocationLogger *logger;
 }
 
 - (void)addRegion:(CLLocationDistance)radius desiredAccuracy:(CLLocationAccuracy)accuracy;
@@ -23,26 +28,60 @@
 
 @implementation MapViewController
 
-@synthesize mainMapView;
+@synthesize mainMapView=_mainMapView;
+@synthesize loggerView=_loggerView;
+
+- (void)awakeFromNib {
+	logger = [[LocationLogger alloc] init];
+	logger.delegate = self;
+}
+
+- (void)dealloc {
+    [logger release];
+	
+    [super dealloc];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+	
+	[logger removeAllEvents];
+}
 
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad {
     [super viewDidLoad];
 	
-	UIBarButtonItem *here = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"GoHere4"] style:UIBarButtonItemStyleBordered target:self action:@selector(currentLocation:)] autorelease];
+	CAGradientLayer *shade = [CAGradientLayer layer];
+	CGRect r = self.loggerView.frame;
+	CGFloat px = 1.0 / r.size.height;
+	shade.frame = r;
+	shade.locations = [NSArray arrayWithObjects:
+					   [NSNumber numberWithFloat:0.0], 
+					   [NSNumber numberWithFloat:0.5 * px], 
+					   [NSNumber numberWithFloat:1.0 * px], 
+					   [NSNumber numberWithFloat:10.0 * px], 
+					   [NSNumber numberWithFloat:(r.size.height - 10.0) * px], 
+					   [NSNumber numberWithFloat:1.0], 
+					   nil];
+	shade.colors = [NSArray arrayWithObjects:
+					(id)[UIColor colorWithWhite:1.0 alpha:0.5].CGColor, 
+					(id)[UIColor colorWithWhite:0.0 alpha:0.7].CGColor, 
+					(id)[UIColor colorWithWhite:0.0 alpha:0.5].CGColor, 
+					(id)[UIColor colorWithWhite:0.0 alpha:0.0].CGColor, 
+					(id)[UIColor colorWithWhite:0.0 alpha:0.0].CGColor, 
+					(id)[UIColor colorWithWhite:0.0 alpha:0.5].CGColor, 
+					nil];
+	[self.view.layer addSublayer:shade];
 	
-	self.navigationItem.leftBarButtonItem = here;
-	
-	if ([CLLocationManager regionMonitoringAvailable]) {
-		UIBarButtonItem *add = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(add:)] autorelease];
-		add.enabled = YES;
-		
-		self.navigationItem.rightBarButtonItem = add;
-	}
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(regionDidEnterOrExit:) name:BSKLocationManagerDidEnterRegionNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(regionDidEnterOrExit:) name:BSKLocationManagerDidExitRegionNotification object:nil];
 }
 
 - (void)viewDidUnload {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	
     [super viewDidUnload];
 }
 
@@ -61,26 +100,22 @@
 
 #pragma mark - actions
 
-- (void)currentLocation:(id)sender {
+- (IBAction)currentLocation:(id)sender {
 	BSKLocationClient *client = [[BSKLocationClient client] retain];
 	client.enabled = YES;
-	
-	self.navigationItem.leftBarButtonItem.enabled = NO;
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(locationUpdated:) name:BSKLocationManagerDidUpdateToLocationNotification object:nil];
 	
 	double delayInSeconds = 3.0;
 	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
 	dispatch_after(popTime, dispatch_get_main_queue(), ^{
-		self.navigationItem.leftBarButtonItem.enabled = YES;
-		
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:BSKLocationManagerDidUpdateToLocationNotification object:nil];
 		
 		[client release];
 	});
 }
 
-- (void)add:(id)sender {
+- (IBAction)add:(id)sender {
 	[self addRegion:100 desiredAccuracy:kCLLocationAccuracyBest];
 }
 
@@ -100,6 +135,22 @@
 	
 	[target release];
 	[region release];
+}
+
+- (IBAction)openSettings:(id)sender {
+	SettingsViewController *controller = [[SettingsViewController alloc] init];
+	controller.delegate = self;
+	
+	UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:controller];
+	
+	[self presentModalViewController:navi animated:YES];
+	
+	[navi release];
+	[controller release];
+}
+
+- (IBAction)toggleLogger:(id)sender {
+	
 }
 
 - (void)playSound {
@@ -191,15 +242,68 @@
 		[self playSound];
 	} else {
 		UILocalNotification *lc = [[UILocalNotification alloc] init];
-		lc.soundName = UILocalNotificationDefaultSoundName;
+		lc.soundName = @"Purr.aiff";
 		lc.alertBody = [notification name];
 		[[UIApplication sharedApplication] presentLocalNotificationNow:lc];
+		[lc release];
 	}
 }
 
 - (void)authorizationChanged:(NSNotification *)notification {
-	UIBarButtonItem *add = self.navigationItem.rightBarButtonItem;
-	add.enabled = YES;
+}
+
+#pragma mark - Table View
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+	return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+	return [logger count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	NSString *identifier = @"LoggerCell";
+	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+	if (cell == nil) {
+		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:identifier] autorelease];
+	}
+	
+	LocationEvent *event = [logger eventAtIndex:indexPath.row];
+	
+	NSString *title = [NSString stringWithFormat:@"%@ : %@ %@", [NSDateFormatter localizedStringFromDate:event.timestamp dateStyle:NSDateFormatterNoStyle timeStyle:NSDateFormatterMediumStyle], event.title, (event.inBackground ? @"( BG)" : @"")];
+	
+	cell.textLabel.text = title;
+	cell.detailTextLabel.text = [event description];
+	
+	return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+#pragma mark - LocationLoggerDelegate
+
+- (void)locationLogger:(LocationLogger *)logger eventDidAdd:(LocationEvent *)event atIndexes:(NSIndexSet *)indexes {
+	dispatch_async(dispatch_get_main_queue(), ^{
+		if (_loggerView) {
+			CGPoint offset = _loggerView.contentOffset;
+			
+			[_loggerView reloadData];
+			
+			if (offset.y > 0) {
+				offset.y += _loggerView.rowHeight;
+				_loggerView.contentOffset = offset;
+			}
+		}
+	});
+}
+
+#pragma mark - ModalViewControllerDelegate
+
+- (void)viewControllerDidFinish:(UIViewController *)viewController {
+	[self dismissModalViewControllerAnimated:YES];
 }
 
 @end

@@ -24,7 +24,7 @@
 
 @implementation SettingsViewController
 
-@synthesize locationEnabled, workInBackground, distanceFilter, distanceFilterLabel, desiredAccuracy, desiredAccuracyLabel, buildInfoLabel;
+@synthesize delegate, locationEnabled, workInBackground, distanceFilter, distanceFilterLabel, desiredAccuracy, desiredAccuracyLabel, buildInfoLabel;
 
 #pragma mark - View lifecycle
 
@@ -44,6 +44,9 @@
 	self.desiredAccuracyLabel.text = [self desiredAccuracyToString:manager.desiredAccuracy];
 	
 	self.buildInfoLabel.text = BUILD_INFO;
+	
+	self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
+	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(done:)] autorelease];
 }
 
 - (void)viewDidUnload {
@@ -64,6 +67,10 @@
 }
 
 #pragma mark - actions
+
+- (IBAction)done:(id)sender {
+	[self.delegate viewControllerDidFinish:self];
+}
 
 - (IBAction)locationEnabledChanged:(id)sender {
 	BSKLocationManager *manager = [BSKLocationManager sharedManager];
